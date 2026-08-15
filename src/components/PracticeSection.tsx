@@ -99,52 +99,58 @@ export const PracticeSection: React.FC<PracticeSectionProps> = ({
           
           {/* Level filter buttons */}
           <div className="space-y-1.5">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Phân loại mức độ:</span>
-            <div className="flex flex-wrap gap-2">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Phân loại mức độ:</span>
+            <div className="flex flex-wrap gap-1.5">
               {[
                 { id: 'all', label: 'Tất cả mức độ' },
                 { id: 1, label: 'Mức 1: Nhớ & Hiểu' },
                 { id: 2, label: 'Mức 2: Áp dụng' },
                 { id: 3, label: 'Mức 3: Vận dụng' }
-              ].map(lvl => (
-                <button
-                  key={String(lvl.id)}
-                  onClick={() => setSelectedLevel(lvl.id as any)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                    selectedLevel === lvl.id
-                      ? 'bg-emerald-600 text-white shadow-sm'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                  }`}
-                >
-                  {lvl.label}
-                </button>
-              ))}
+              ].map(lvl => {
+                const isSelected = selectedLevel === lvl.id;
+                return (
+                  <button
+                    key={String(lvl.id)}
+                    onClick={() => setSelectedLevel(lvl.id as any)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
+                      isSelected
+                        ? 'bg-emerald-600 text-white border-emerald-500 shadow-sm ring-2 ring-emerald-500/20'
+                        : 'bg-slate-100/80 text-slate-600 border-slate-200 hover:bg-slate-200 hover:text-slate-900'
+                    }`}
+                  >
+                    {lvl.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* Lesson filter buttons */}
           <div className="space-y-1.5">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Lọc theo bài học:</span>
-            <div className="flex flex-wrap gap-2">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Lọc theo bài học:</span>
+            <div className="flex flex-wrap gap-1.5">
               {[
                 { id: 'all', label: 'Tất cả bài' },
-                { id: 1, label: 'Bài 1: Lewis & VSEPR' },
+                { id: 1, label: 'Bài 1: VSEPR' },
                 { id: 2, label: 'Bài 2: Hạt nhân' },
                 { id: 3, label: 'Bài 3: Arrhenius' },
-                { id: 4, label: 'Bài 4: Entropy & Gibbs' }
-              ].map(ls => (
-                <button
-                  key={String(ls.id)}
-                  onClick={() => setSelectedLesson(ls.id as any)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                    selectedLesson === ls.id
-                      ? 'bg-indigo-600 text-white shadow-sm'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                  }`}
-                >
-                  {ls.label}
-                </button>
-              ))}
+                { id: 4, label: 'Bài 4: Gibbs' }
+              ].map(ls => {
+                const isSelected = selectedLesson === ls.id;
+                return (
+                  <button
+                    key={String(ls.id)}
+                    onClick={() => setSelectedLesson(ls.id as any)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
+                      isSelected
+                        ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm ring-2 ring-indigo-500/20'
+                        : 'bg-slate-100/80 text-slate-600 border-slate-200 hover:bg-slate-200 hover:text-slate-900'
+                    }`}
+                  >
+                    {ls.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 

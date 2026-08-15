@@ -45,50 +45,50 @@ export const LabSimulations: React.FC<LabProps> = ({ initialTab = 'vsepr' }) => 
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mb-8 bg-slate-100 p-1.5 rounded-2xl max-w-3xl mx-auto">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-8 bg-slate-200/70 border border-slate-300/60 p-1.5 rounded-2xl max-w-4xl mx-auto">
         <button
           onClick={() => setActiveTab('vsepr')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all ${
+          className={`flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all cursor-pointer border ${
             activeTab === 'vsepr'
-              ? 'bg-white text-indigo-600 shadow-sm'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+              ? 'bg-white text-indigo-700 border-indigo-200 shadow-sm ring-2 ring-indigo-500/20'
+              : 'bg-transparent border-transparent text-slate-600 hover:text-slate-900 hover:bg-white/60'
           }`}
         >
-          <Atom className="w-4 h-4" />
-          1. VSEPR & Lai Hóa 3D
+          <Atom className="w-4 h-4 text-indigo-600" />
+          1. VSEPR 3D
         </button>
         <button
           onClick={() => setActiveTab('nuclear')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all ${
+          className={`flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all cursor-pointer border ${
             activeTab === 'nuclear'
-              ? 'bg-white text-emerald-600 shadow-sm'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+              ? 'bg-white text-emerald-700 border-emerald-200 shadow-sm ring-2 ring-emerald-500/20'
+              : 'bg-transparent border-transparent text-slate-600 hover:text-slate-900 hover:bg-white/60'
           }`}
         >
-          <Radiation className="w-4 h-4" />
-          2. Phóng Xạ & Chu Kì Bán Rã
+          <Radiation className="w-4 h-4 text-emerald-600" />
+          2. Bán Rã Hạt Nhân
         </button>
         <button
           onClick={() => setActiveTab('arrhenius')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all ${
+          className={`flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all cursor-pointer border ${
             activeTab === 'arrhenius'
-              ? 'bg-white text-amber-600 shadow-sm'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+              ? 'bg-white text-amber-700 border-amber-200 shadow-sm ring-2 ring-amber-500/20'
+              : 'bg-transparent border-transparent text-slate-600 hover:text-slate-900 hover:bg-white/60'
           }`}
         >
-          <Zap className="w-4 h-4" />
-          3. Năng Lượng Ea & Xúc Tác
+          <Zap className="w-4 h-4 text-amber-600" />
+          3. Năng Lượng Ea
         </button>
         <button
           onClick={() => setActiveTab('gibbs')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all ${
+          className={`flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all cursor-pointer border ${
             activeTab === 'gibbs'
-              ? 'bg-white text-rose-600 shadow-sm'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+              ? 'bg-white text-rose-700 border-rose-200 shadow-sm ring-2 ring-rose-500/20'
+              : 'bg-transparent border-transparent text-slate-600 hover:text-slate-900 hover:bg-white/60'
           }`}
         >
-          <Compass className="w-4 h-4" />
-          4. Nhiệt Động Gibbs (ΔG)
+          <Compass className="w-4 h-4 text-rose-600" />
+          4. Nhiệt Động Gibbs
         </button>
       </div>
 
@@ -398,20 +398,26 @@ const VseprSimulation: React.FC = () => {
           </div>
 
           {/* Molecule pill buttons */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {MOLECULES.map((m, idx) => (
-              <button
-                key={m.formula}
-                onClick={() => setSelectedIdx(idx)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  selectedIdx === idx
-                    ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
-              >
-                {m.formula} ({m.vsepr})
-              </button>
-            ))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
+            {MOLECULES.map((m, idx) => {
+              const isSelected = selectedIdx === idx;
+              return (
+                <button
+                  key={m.formula}
+                  onClick={() => setSelectedIdx(idx)}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold text-left transition-all border flex items-center justify-between cursor-pointer ${
+                    isSelected
+                      ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm ring-2 ring-indigo-500/20'
+                      : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+                  }`}
+                >
+                  <span className="font-bold">{m.formula}</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${isSelected ? 'bg-indigo-800 text-indigo-100' : 'bg-slate-200 text-slate-600'}`}>
+                    {m.vsepr}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           {/* 3D Visualizer Canvas Box */}

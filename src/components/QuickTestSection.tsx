@@ -147,30 +147,61 @@ export const QuickTestSection: React.FC<QuickTestProps> = ({
         </p>
       </div>
 
-      {/* Floating Status & Timer Bar */}
-      <div className="sticky top-20 z-40 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3 text-xs sm:text-sm font-semibold text-slate-700">
-          <span>Tiến trình làm bài:</span>
-          <span className="text-rose-600 font-bold">
-            {Object.keys(selectedAnswers).length} / {quickTestQuestions.length} câu
-          </span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-slate-800">
-            <Clock className="w-4 h-4 text-rose-600" />
-            <span>Thời gian: {formatTime(timeLeft)}</span>
+      {/* Floating Status, Timer & Quick Navigator Bar */}
+      <div className="sticky top-20 z-40 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3 text-xs sm:text-sm font-semibold text-slate-700">
+            <span>Tiến trình làm bài:</span>
+            <span className="text-rose-600 font-bold">
+              {Object.keys(selectedAnswers).length} / {quickTestQuestions.length} câu
+            </span>
           </div>
 
-          {!isSubmitted && (
-            <button
-              onClick={handleSubmit}
-              disabled={Object.keys(selectedAnswers).length === 0}
-              className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-all"
-            >
-              Nộp bài thi
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-slate-800">
+              <Clock className="w-4 h-4 text-rose-600" />
+              <span>Thời gian: {formatTime(timeLeft)}</span>
+            </div>
+
+            {!isSubmitted && (
+              <button
+                onClick={handleSubmit}
+                disabled={Object.keys(selectedAnswers).length === 0}
+                className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm shadow-sm transition-all cursor-pointer"
+              >
+                Nộp bài thi
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Quick jump question numbers */}
+        <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-slate-100">
+          <span className="text-[11px] font-bold text-slate-500 mr-1">Bảng câu hỏi:</span>
+          {quickTestQuestions.map((q, qIndex) => {
+            const hasAnswered = selectedAnswers[q.id] !== undefined;
+            const isCorrect = isSubmitted && selectedAnswers[q.id] === q.correctIndex;
+            const isIncorrect = isSubmitted && hasAnswered && selectedAnswers[q.id] !== q.correctIndex;
+
+            let badgeStyle = 'bg-slate-100 text-slate-600 border-slate-200';
+            if (isSubmitted) {
+              if (isCorrect) badgeStyle = 'bg-emerald-600 text-white border-emerald-600 font-bold';
+              else if (isIncorrect) badgeStyle = 'bg-rose-600 text-white border-rose-600 font-bold';
+              else badgeStyle = 'bg-slate-200 text-slate-400 border-slate-300';
+            } else if (hasAnswered) {
+              badgeStyle = 'bg-rose-100 text-rose-800 border-rose-300 font-bold';
+            }
+
+            return (
+              <a
+                key={q.id}
+                href={`#question-${q.id}`}
+                className={`w-7 h-7 rounded-lg border text-xs flex items-center justify-center transition-all hover:scale-105 ${badgeStyle}`}
+              >
+                {qIndex + 1}
+              </a>
+            );
+          })}
         </div>
       </div>
 
@@ -248,7 +279,8 @@ export const QuickTestSection: React.FC<QuickTestProps> = ({
           return (
             <div 
               key={q.id}
-              className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-4"
+              id={`question-${q.id}`}
+              className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-4 scroll-mt-36"
             >
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2">
@@ -283,19 +315,19 @@ export const QuickTestSection: React.FC<QuickTestProps> = ({
               </h4>
 
               {/* Options */}
-              <div className="space-y-2.5 pt-1">
+              <div className="space-y-2 pt-1">
                 {q.options.map((opt, oIdx) => {
                   const isSelected = userAns === oIdx;
                   const isCorrectOpt = oIdx === q.correctIndex;
 
-                  let btnClass = 'border-slate-200 bg-slate-50/50 hover:border-slate-300 text-slate-700';
+                  let btnClass = 'border-slate-200 bg-slate-50/70 hover:border-rose-300 hover:bg-rose-50/30 text-slate-700';
                   if (isSelected && !isSubmitted) {
-                    btnClass = 'border-rose-600 bg-rose-50 text-rose-950 font-semibold';
+                    btnClass = 'border-rose-600 bg-rose-50 text-rose-950 font-bold ring-2 ring-rose-500/20';
                   } else if (isSubmitted) {
                     if (isSelected && isCorrectOpt) {
-                      btnClass = 'border-emerald-500 bg-emerald-50 text-emerald-950 font-bold';
+                      btnClass = 'border-emerald-500 bg-emerald-50 text-emerald-950 font-bold ring-2 ring-emerald-500/20';
                     } else if (isSelected && !isCorrectOpt) {
-                      btnClass = 'border-rose-500 bg-rose-50 text-rose-950';
+                      btnClass = 'border-rose-500 bg-rose-50 text-rose-950 font-medium ring-2 ring-rose-500/20';
                     } else if (isCorrectOpt) {
                       btnClass = 'border-emerald-400 bg-emerald-50/70 text-emerald-900 font-semibold';
                     } else {
@@ -308,10 +340,12 @@ export const QuickTestSection: React.FC<QuickTestProps> = ({
                       key={oIdx}
                       disabled={isSubmitted}
                       onClick={() => handleSelect(q.id, oIdx)}
-                      className={`w-full text-left p-3.5 rounded-2xl border text-xs sm:text-sm transition-all flex items-start justify-between gap-3 ${btnClass}`}
+                      className={`w-full text-left p-3.5 rounded-2xl border text-xs sm:text-sm transition-all flex items-start justify-between gap-3 cursor-pointer ${btnClass}`}
                     >
                       <div className="flex items-start gap-3">
-                        <span className="w-6 h-6 rounded-full bg-white border border-slate-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5 text-slate-600">
+                        <span className={`w-6 h-6 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 mt-0.5 border ${
+                          isSelected ? 'bg-rose-600 text-white border-rose-600' : 'bg-white border-slate-300 text-slate-700'
+                        }`}>
                           {String.fromCharCode(65 + oIdx)}
                         </span>
                         <span className="leading-relaxed">{opt}</span>
