@@ -1,0 +1,6 @@
+{
+  "name": "Học Tập Hóa Học 10 - Cơ Sở Hóa Học",
+  "description": "Ứng dụng tự học, ôn tập tương tác và thực hành Hóa học 10 Chuyên đề 1: Cơ sở Hóa học (Liên kết hóa học, Phản ứng hạt nhân, Năng lượng hoạt hóa, Entropy & Năng lượng tự do Gibbs)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
