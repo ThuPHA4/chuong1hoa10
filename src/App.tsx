@@ -181,11 +181,24 @@ export default function App() {
             <button onClick={() => setActiveSection('test')} className="hover:text-indigo-600">Kiểm tra</button>
           </div>
 
-          <div className="text-slate-400 text-[11px] text-center sm:text-right">
-            Dành cho học sinh tự học & ôn luyện hiệu quả
+          <div className="text-slate-500 text-[12px] text-center sm:text-right font-medium">
+            <div>Dành cho học sinh tự học & ôn luyện hiệu quả</div>
+            <div className="text-indigo-600 font-semibold mt-1">
+              Designed by ThuPHA4 - Fschool Hậu Giang
+            </div>
           </div>
         </div>
       </footer>
+
+      {/* Floating Bottom-Right Author Badge */}
+      <div 
+        id="author-badge"
+        className="fixed bottom-3 right-3 z-40 bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-md px-3 py-1.5 rounded-full text-xs font-semibold text-slate-700 flex items-center gap-1.5 pointer-events-auto transition-all hover:bg-white hover:shadow-lg"
+      >
+        <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+        <span className="text-slate-500">Designed by</span>
+        <span className="text-indigo-700 font-bold">ThuPHA4 - Fschool Hậu Giang</span>
+      </div>
     </div>
   );
 }
